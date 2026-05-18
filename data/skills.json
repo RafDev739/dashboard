@@ -1,0 +1,150 @@
+{
+  "skills": [
+    {
+      "id": "morning-briefing",
+      "name": "Morning Briefing",
+      "icon": "🌅",
+      "description": "Generates a daily news briefing that searches for the latest news on Venezuela politics, AI developments, and ICE activity, plus an email summary with priority triage and draft replies for urgent items.",
+      "triggers": ["morning briefing", "daily briefing", "start my day", "what's happening today"],
+      "featured": true,
+      "parameters": [
+        {
+          "name": "focus_topics",
+          "label": "Focus Topics (optional)",
+          "type": "text",
+          "required": false,
+          "placeholder": "e.g. AI, politics, local news"
+        },
+        {
+          "name": "email_summary",
+          "label": "Include Email Summary",
+          "type": "select",
+          "required": false,
+          "options": ["Yes", "No"],
+          "default": "Yes"
+        }
+      ],
+      "command": "claude --dangerously-skip-permissions -p \"/morning-briefing\""
+    },
+    {
+      "id": "research-assistant",
+      "name": "Research Assistant",
+      "icon": "🔍",
+      "description": "Produces comprehensive, well-sourced research documents with real data from the web. Searches multiple sources, reads actual pages, cross-references claims, and writes a structured research brief with citations.",
+      "triggers": ["research", "find information about", "look up", "research assistant"],
+      "featured": true,
+      "parameters": [
+        {
+          "name": "topic",
+          "label": "Research Topic",
+          "type": "text",
+          "required": true,
+          "placeholder": "What do you want to research?"
+        },
+        {
+          "name": "depth",
+          "label": "Research Depth",
+          "type": "select",
+          "required": false,
+          "options": ["Quick overview", "Standard", "Deep dive"],
+          "default": "Standard"
+        }
+      ],
+      "command": "claude --skill research-assistant"
+    },
+    {
+      "id": "obsidian-daily-note",
+      "name": "Daily Note",
+      "icon": "📝",
+      "description": "Log activities, manage projects, and track tasks in your Obsidian vault. Records what you did, logs progress, updates projects, creates new projects, adds or completes tasks.",
+      "triggers": ["daily note", "log activity", "update project", "add task", "obsidian"],
+      "featured": true,
+      "parameters": [
+        {
+          "name": "note_content",
+          "label": "Note Content",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "What would you like to log?"
+        },
+        {
+          "name": "project",
+          "label": "Project (optional)",
+          "type": "text",
+          "required": false,
+          "placeholder": "Project name"
+        }
+      ],
+      "command": "claude --skill obsidian-daily-note"
+    },
+    {
+      "id": "campamento-prompt",
+      "name": "Campamento Prompt",
+      "icon": "✍️",
+      "description": "Interactive prompt builder using the Campamento framework (Role, Goal, Context, Examples, Action, Format, Tone). Walks through each item one at a time and assembles the final optimized prompt.",
+      "triggers": ["campamento", "build a prompt", "create a prompt", "prompt builder"],
+      "featured": false,
+      "parameters": [
+        {
+          "name": "prompt_goal",
+          "label": "What is the goal of your prompt?",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Describe what you want the AI to do"
+        }
+      ],
+      "command": "claude --skill campamento-prompt"
+    },
+    {
+      "id": "image-editor",
+      "name": "Image Editor",
+      "icon": "🖼️",
+      "description": "Edit, resize, or remove the background from any image. Supports background swap, color changes, object removal/addition, style transfer, and lighting adjustments via Gemini AI.",
+      "triggers": ["edit image", "remove background", "image editor", "change image"],
+      "featured": false,
+      "parameters": [
+        {
+          "name": "image_path",
+          "label": "Image File Path",
+          "type": "text",
+          "required": true,
+          "placeholder": "/path/to/image.jpg"
+        },
+        {
+          "name": "edit_instruction",
+          "label": "Edit Instruction",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "What changes should be made to the image?"
+        }
+      ],
+      "command": "claude --skill image-editor"
+    },
+    {
+      "id": "frontend-design",
+      "name": "Frontend Design",
+      "icon": "🎨",
+      "description": "Creates distinctive, production-grade frontend interfaces with high design quality. Use for web components, pages, artifacts, dashboards, React components, or HTML/CSS layouts.",
+      "triggers": ["design", "create UI", "build component", "frontend", "make a page"],
+      "featured": false,
+      "parameters": [
+        {
+          "name": "description",
+          "label": "What do you want to build?",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Describe the UI you want to create"
+        },
+        {
+          "name": "tech_stack",
+          "label": "Tech Stack",
+          "type": "select",
+          "required": false,
+          "options": ["React + Tailwind", "Plain HTML/CSS", "Next.js", "Vue.js"],
+          "default": "React + Tailwind"
+        }
+      ],
+      "command": "claude --skill frontend-design"
+    }
+  ]
+}

@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Layout */
+  --page-bg: #F0F4F8;
+  --sidebar-bg: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+  --sidebar-border: #E2E8F0;
+
+  /* Text */
+  --text-primary: #062134;
+  --text-secondary: #4A5568;
+  --text-muted: #94A3B8;
+
+  /* Pictures With Magic brand accents */
+  --accent-orange: #E98520;
+  --accent-orange-light: #F7901E;
+  --accent-blue: #1B99E8;
+  --button-bg: #0C499C;
+  --button-text: #FFFFFF;
+
+  /* Nav */
+  --nav-active-bg: #FFF3E0;
+  --nav-active-color: #E98520;
+  --nav-hover-bg: #F1F5F9;
+
+  /* Badges */
+  --badge-green-bg: #DCFCE7;
+  --badge-green-text: #16A34A;
+  --badge-orange-bg: #FFF3E0;
+  --badge-orange-text: #E98520;
+  --badge-blue-bg: #DBEAFE;
+  --badge-blue-text: #1D4ED8;
+
+  /* Aliases used throughout */
+  --border-color: #E2E8F0;
+  --text-light: #062134;
+  --metric-box-bg: #FFFFFF;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-page: var(--page-bg);
+  --color-card: var(--card-bg);
+  --color-orange: var(--accent-orange);
+  --color-accent-blue: var(--accent-blue);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 14px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --page-bg: #0C3C60;
+  --sidebar-bg: #062134;
+  --card-bg: #183D83;
+  --card-border: #1468A8;
+  --sidebar-border: #1468A8;
+  --text-primary: #FFFFFF;
+  --text-secondary: #AFCBE0;
+  --text-muted: #6B8FA8;
+  --text-light: #FFFFFF;
+  --border-color: #1468A8;
+  --nav-active-bg: #0C499C;
+  --nav-hover-bg: #0D3A60;
+  --metric-box-bg: #183D83;
+  --button-bg: #0C499C;
+  --badge-green-bg: rgba(22,163,74,0.2);
+  --badge-green-text: #4ADE80;
+  --badge-orange-bg: rgba(233,133,32,0.2);
+  --badge-orange-text: #E98520;
+  --badge-blue-bg: rgba(27,153,232,0.2);
+  --badge-blue-text: #60B4F0;
+}
+
+/* Email row density */
+[data-density="compact"]  { --email-row-py: 8px; }
+[data-density="normal"]   { --email-row-py: 12px; }
+[data-density="spacious"] { --email-row-py: 18px; }
