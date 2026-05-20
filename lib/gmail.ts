@@ -86,21 +86,32 @@ function buildNewsQuery(outlets: string[]): string {
 }
 
 export async function getEmailCounts(
-  accessToken: string
+  accessToken: string,
+  newsOutlets?: string[]
 ): Promise<{ new: number; marketing: number; news: number; social: number; personal: number }> {
   // Labels API returns exact messagesUnread counts per category
   const [inboxLabel, promotionsLabel, updatesLabel, socialLabel, personalLabel] = await Promise.all([
     gmailFetch(accessToken, '/labels/INBOX').catch(() => ({ messagesUnread: 0 })),
     gmailFetch(accessToken, '/labels/CATEGORY_PROMOTIONS').catch(() => ({ messagesUnread: 0 })),
-    gmailFetch(accessToken, '/labels/CATEGORY_UPDATES').catch(() => ({ messagesUnread: 0 })),
-    gmailFetch(accessToken, '/labels/CATEGORY_SOCIAL').catch(() => ({ messagesUnread: 0 })),
+    gmailFetch(accessToken, '/labels/CATEGORY_UPDATES').catch(() => ({ messagesTotal: 0 })),
+    gmailFetch(accessToken, '/labels/CATEGORY_SOCIAL').catch(() => ({ messagesTotal: 0 })),
     gmailFetch(accessToken, '/labels/CATEGORY_PERSONAL').catch(() => ({ messagesTotal: 0 })),
   ])
+
+  let newsCount = updatesLabel.messagesTotal || 0
+  if (newsOutlets && newsOutlets.length > 0) {
+    const q = newsOutlets.map((d) => `from:${d}`).join(' OR ')
+    const newsData = await gmailFetch(
+      accessToken,
+      `/messages?q=${encodeURIComponent(q)}&maxResults=1`
+    ).catch(() => ({ resultSizeEstimate: 0 }))
+    newsCount = newsData.resultSizeEstimate || 0
+  }
 
   return {
     new: inboxLabel.messagesUnread || 0,
     marketing: promotionsLabel.messagesTotal || 0,
-    news: updatesLabel.messagesTotal || 0,
+    news: newsCount,
     social: socialLabel.messagesTotal || 0,
     personal: personalLabel.messagesTotal || 0,
   }

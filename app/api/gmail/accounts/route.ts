@@ -1,18 +1,21 @@
 import { auth } from '@/auth'
 import { getEmailCounts, getUserProfile } from '@/lib/gmail'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await auth()
 
   if (!session?.accessToken) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
+  const outletsParam = request.nextUrl.searchParams.get('newsOutlets')
+  const newsOutlets = outletsParam ? outletsParam.split(',').filter(Boolean) : undefined
+
   try {
     const [profile, counts] = await Promise.all([
       getUserProfile(session.accessToken),
-      getEmailCounts(session.accessToken),
+      getEmailCounts(session.accessToken, newsOutlets),
     ])
 
     return NextResponse.json({
