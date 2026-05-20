@@ -1,6 +1,6 @@
 import { gmail_v1 } from '@googleapis/gmail'
 
-export type GmailCategory = 'new' | 'marketing' | 'news' | 'social'
+export type GmailCategory = 'new' | 'marketing' | 'news' | 'social' | 'personal'
 
 export interface EmailMessage {
   id: string
@@ -80,20 +80,23 @@ function parseMessage(msg: gmail_v1.Schema$Message): EmailMessage {
 }
 
 function buildNewsQuery(outlets: string[]): string {
-  if (!outlets || outlets.length === 0) return 'labelIds=CATEGORY_UPDATES'
-  const q = outlets.map((d) => `from:${d}`).join(' OR ')
+  if (!outlets || outlets.length === 0)
+    return `labelIds=CATEGORY_UPDATES&q=${encodeURIComponent('-category:personal')}`
+  const fromPart = outlets.map((d) => `from:${d}`).join(' OR ')
+  const q = outlets.length === 1 ? `${fromPart} -category:personal` : `(${fromPart}) -category:personal`
   return `q=${encodeURIComponent(q)}`
 }
 
 export async function getEmailCounts(
   accessToken: string
-): Promise<{ new: number; marketing: number; news: number; social: number }> {
+): Promise<{ new: number; marketing: number; news: number; social: number; personal: number }> {
   // Labels API returns exact messagesUnread counts per category
-  const [inboxLabel, promotionsLabel, updatesLabel, socialLabel] = await Promise.all([
+  const [inboxLabel, promotionsLabel, updatesLabel, socialLabel, personalLabel] = await Promise.all([
     gmailFetch(accessToken, '/labels/INBOX').catch(() => ({ messagesUnread: 0 })),
     gmailFetch(accessToken, '/labels/CATEGORY_PROMOTIONS').catch(() => ({ messagesUnread: 0 })),
     gmailFetch(accessToken, '/labels/CATEGORY_UPDATES').catch(() => ({ messagesUnread: 0 })),
     gmailFetch(accessToken, '/labels/CATEGORY_SOCIAL').catch(() => ({ messagesUnread: 0 })),
+    gmailFetch(accessToken, '/labels/CATEGORY_PERSONAL').catch(() => ({ messagesTotal: 0 })),
   ])
 
   return {
@@ -101,6 +104,7 @@ export async function getEmailCounts(
     marketing: promotionsLabel.messagesTotal || 0,
     news: updatesLabel.messagesTotal || 0,
     social: socialLabel.messagesTotal || 0,
+    personal: personalLabel.messagesTotal || 0,
   }
 }
 
@@ -115,9 +119,11 @@ export async function listEmails(
   if (category === 'new') {
     query = `labelIds=INBOX&labelIds=UNREAD`
   } else if (category === 'marketing') {
-    query = `labelIds=CATEGORY_PROMOTIONS`
+    query = `labelIds=CATEGORY_PROMOTIONS&q=${encodeURIComponent('-category:personal')}`
   } else if (category === 'social') {
-    query = `labelIds=CATEGORY_SOCIAL`
+    query = `labelIds=CATEGORY_SOCIAL&q=${encodeURIComponent('-category:personal')}`
+  } else if (category === 'personal') {
+    query = `labelIds=CATEGORY_PERSONAL`
   } else {
     // news — domain-based
     query = buildNewsQuery(newsOutlets || [])

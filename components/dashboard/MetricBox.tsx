@@ -33,6 +33,10 @@ export default function MetricBox({
         cursor: isClickable ? 'pointer' : 'default',
         transition: 'all 0.12s ease',
         minWidth: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
       }}
       className={isClickable ? 'hover:border-[var(--accent-orange)] hover:bg-[#FFF8F0]' : ''}
     >
@@ -50,7 +54,7 @@ export default function MetricBox({
       ) : (
         <div
           style={{
-            fontSize: '2rem',
+            fontSize: String(count).length >= 5 ? '1.25rem' : String(count).length >= 4 ? '1.55rem' : '2rem',
             fontWeight: 700,
             color: active ? 'var(--accent-orange)' : accent ? 'var(--accent-orange)' : '#0D13AB',
             lineHeight: 1,

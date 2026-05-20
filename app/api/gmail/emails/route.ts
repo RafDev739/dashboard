@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const outletsParam = searchParams.get('newsOutlets')
   const newsOutlets = outletsParam ? outletsParam.split(',').filter(Boolean) : undefined
 
-  const validCategories: GmailCategory[] = ['new', 'marketing', 'news', 'social']
+  const validCategories: GmailCategory[] = ['new', 'marketing', 'news', 'social', 'personal']
   if (!validCategories.includes(category)) {
     return NextResponse.json({ error: 'Invalid category' }, { status: 400 })
   }

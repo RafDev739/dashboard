@@ -11,13 +11,14 @@ import { type EmailMessage } from '@/lib/gmail'
 import { applyRules, runBulkDelete, type BulkRules, type BulkProgress } from '@/lib/bulkDelete'
 import { useSettings } from '@/components/layout/SettingsProvider'
 
-type Category = 'new' | 'marketing' | 'news' | 'social'
+type Category = 'new' | 'marketing' | 'news' | 'social' | 'personal'
 
 interface Counts {
   new: number
   marketing: number
   news: number
   social: number
+  personal: number
 }
 
 const DEFAULT_RULES: BulkRules = {
@@ -31,7 +32,7 @@ export default function EmailPage() {
   const { settings } = useSettings()
   const [activeCategory, setActiveCategory] = useState<Category>('new')
   const [emails, setEmails] = useState<EmailMessage[]>([])
-  const [counts, setCounts] = useState<Counts>({ new: 0, marketing: 0, news: 0, social: 0 })
+  const [counts, setCounts] = useState<Counts>({ new: 0, marketing: 0, news: 0, social: 0, personal: 0 })
   const [loading, setLoading] = useState(true)
   const [countsLoading, setCountsLoading] = useState(true)
   const [selectedEmail, setSelectedEmail] = useState<EmailMessage | null>(null)
@@ -61,7 +62,7 @@ export default function EmailPage() {
         if (res.status === 401) return
         const data = await res.json()
         const account = data.accounts?.[0]
-        if (account) setCounts({ ...{ social: 0 }, ...account.counts })
+        if (account) setCounts({ ...{ social: 0, personal: 0 }, ...account.counts })
       })
       .catch(console.error)
   }, [settings.newsOutlets])
@@ -78,7 +79,7 @@ export default function EmailPage() {
         }
         const data = await res.json()
         const account = data.accounts?.[0]
-        if (account) setCounts({ ...{ social: 0 }, ...account.counts })
+        if (account) setCounts({ ...{ social: 0, personal: 0 }, ...account.counts })
       })
       .catch(console.error)
       .finally(() => setCountsLoading(false))
@@ -215,6 +216,7 @@ export default function EmailPage() {
     marketing: 'Marketing',
     news: 'News & Updates',
     social: 'Social Media',
+    personal: 'Personal',
   }
 
   const bulkActive = selectedIds.size > 0
@@ -269,7 +271,7 @@ export default function EmailPage() {
       )}
 
       {/* Filter boxes */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         <MetricBox
           label="New Emails"
           count={counts.new}
@@ -297,6 +299,13 @@ export default function EmailPage() {
           loading={countsLoading}
           onClick={() => setActiveCategory('social')}
           active={activeCategory === 'social'}
+        />
+        <MetricBox
+          label="Personal"
+          count={counts.personal}
+          loading={countsLoading}
+          onClick={() => setActiveCategory('personal')}
+          active={activeCategory === 'personal'}
         />
       </div>
 

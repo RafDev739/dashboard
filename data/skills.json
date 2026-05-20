@@ -27,6 +27,67 @@
       "command": "claude --dangerously-skip-permissions -p \"/morning-briefing\""
     },
     {
+      "id": "image-editor",
+      "name": "Image Editor",
+      "icon": "🖼️",
+      "description": "Edit, resize, or remove the background from any image. Supports background swap, color changes, object removal/addition, style transfer, and lighting adjustments via Gemini AI.",
+      "triggers": ["edit image", "remove background", "image editor", "change image"],
+      "featured": false,
+      "parameters": [
+        {
+          "name": "image_path",
+          "label": "Image File Path",
+          "type": "text",
+          "required": true,
+          "placeholder": "/path/to/image.jpg"
+        },
+        {
+          "name": "edit_instruction",
+          "label": "Edit Instruction",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "What changes should be made to the image?"
+        }
+      ],
+      "command": "claude --skill image-editor"
+    },
+    {
+      "id": "fact-checker",
+      "name": "Fact Checker",
+      "icon": "🔍",
+      "description": "Systematic fact verification and misinformation identification using evidence-based analysis. Verifies claims, checks if something is true, identifies misinformation, and evaluates source credibility.",
+      "triggers": ["fact check this", "is this true", "verify this claim", "check misinformation"],
+      "featured": false,
+      "parameters": [
+        {
+          "name": "claim",
+          "label": "Claim or Statement to Verify",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Enter the claim or statement you want to fact-check"
+        }
+      ],
+      "command": "claude --skill fact-checker"
+    },
+    {
+      "id": "humanize",
+      "name": "Humanize",
+      "icon": "✍️",
+      "description": "Makes AI-generated text pass AI detection tools or avoid being identified as machine-written. Uses specialized detector-defeating techniques that produce natural, human-sounding text.",
+      "triggers": ["humanize this", "make this sound human", "avoid AI detection", "rewrite naturally"],
+      "featured": false,
+      "parameters": [
+        {
+          "name": "text",
+          "label": "Text to Humanize",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste the AI-generated text you want to humanize"
+        }
+      ],
+      "command": "claude --skill humanize"
+    },
+    {
       "id": "research-assistant",
       "name": "Research Assistant",
       "icon": "🔍",
@@ -94,31 +155,6 @@
         }
       ],
       "command": "claude --skill campamento-prompt"
-    },
-    {
-      "id": "image-editor",
-      "name": "Image Editor",
-      "icon": "🖼️",
-      "description": "Edit, resize, or remove the background from any image. Supports background swap, color changes, object removal/addition, style transfer, and lighting adjustments via Gemini AI.",
-      "triggers": ["edit image", "remove background", "image editor", "change image"],
-      "featured": false,
-      "parameters": [
-        {
-          "name": "image_path",
-          "label": "Image File Path",
-          "type": "text",
-          "required": true,
-          "placeholder": "/path/to/image.jpg"
-        },
-        {
-          "name": "edit_instruction",
-          "label": "Edit Instruction",
-          "type": "textarea",
-          "required": true,
-          "placeholder": "What changes should be made to the image?"
-        }
-      ],
-      "command": "claude --skill image-editor"
     },
     {
       "id": "frontend-design",

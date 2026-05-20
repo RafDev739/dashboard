@@ -8,7 +8,7 @@ import { type Skill } from '@/lib/skills'
 
 interface AccountData {
   email: string
-  counts: { new: number; marketing: number; news: number; social: number }
+  counts: { new: number; marketing: number; news: number; social: number; personal: number }
   isPrimary: boolean
 }
 
@@ -49,7 +49,7 @@ export default function DashboardPage() {
       .finally(() => setSkillsLoading(false))
   }, [])
 
-  const counts = accounts[0]?.counts || { new: 0, marketing: 0, news: 0, social: 0 }
+  const counts = accounts[0]?.counts || { new: 0, marketing: 0, news: 0, social: 0, personal: 0 }
   const featuredSkills = skills.filter((s) => s.featured)
   const totalEmails = counts.new + counts.marketing + counts.news
 
@@ -85,11 +85,12 @@ export default function DashboardPage() {
       </div>
 
       {/* Metric boxes */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '14px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '14px', marginBottom: '20px' }}>
         <MetricBox label="New emails" count={counts.new} loading={loading} />
         <MetricBox label="Marketing" count={counts.marketing} loading={loading} />
         <MetricBox label="News digests" count={counts.news} loading={loading} />
         <MetricBox label="Social Media" count={counts.social} loading={loading} />
+        <MetricBox label="Personal" count={counts.personal} loading={loading} />
         <MetricBox label="Skills ready" count={skillsLoading ? '—' : skills.length} accent loading={skillsLoading} />
       </div>
 

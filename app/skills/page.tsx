@@ -15,9 +15,15 @@ export default function SkillsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {skills.map((skill) => (
-          <SkillCard key={skill.id} skill={skill} />
+      <div
+        style={{
+          border: '1px solid var(--border-color)',
+          borderRadius: '10px',
+          overflow: 'hidden',
+        }}
+      >
+        {skills.map((skill, index) => (
+          <SkillCard key={skill.id} skill={skill} isLast={index === skills.length - 1} />
         ))}
       </div>
     </div>
