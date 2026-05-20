@@ -80,10 +80,8 @@ function parseMessage(msg: gmail_v1.Schema$Message): EmailMessage {
 }
 
 function buildNewsQuery(outlets: string[]): string {
-  if (!outlets || outlets.length === 0)
-    return `labelIds=CATEGORY_UPDATES&q=${encodeURIComponent('-category:personal')}`
-  const fromPart = outlets.map((d) => `from:${d}`).join(' OR ')
-  const q = outlets.length === 1 ? `${fromPart} -category:personal` : `(${fromPart}) -category:personal`
+  if (!outlets || outlets.length === 0) return 'labelIds=CATEGORY_UPDATES'
+  const q = outlets.map((d) => `from:${d}`).join(' OR ')
   return `q=${encodeURIComponent(q)}`
 }
 
